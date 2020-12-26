@@ -1,0 +1,38 @@
+<view class="videoContainer">
+  <!-- 头部搜索 -->
+  <view class="header">
+    <image class="videoLogo" src="/static/images/video/video.jpg"></image>
+    <input class="search" placeholder="光辉岁月" placeholder-class="placeholder"></input>
+    <image class="logo" src="/static/images/favicon.ico"></image>
+  </view>
+  <!-- 中间视频分组 -->
+  <scroll-view class="navScroll" enable-flex scroll-x bindtap="changeId">
+    <view class="navItem  {{currentId===item.id?'active':''}}" data-id="{{item.id}}" wx:for="{{videoList}}" wx:key="id">
+      <text data-id="{{item.id}}">{{item.name}}</text>
+    </view>
+  </scroll-view>
+  <!-- videoList区域 -->
+  <scroll-view class="videoList" scroll-y>
+      <view class="videoItem">
+        <video class="common"></video>
+        <view class="content">Wiz Khalifa《See You Again》韩国演唱会</view>
+        <view class="footer">
+          <image class="avatar" src="/static/images/logo.png"></image>
+          <text class="nickName">硅谷云音乐</text>
+          <view class="comments_praised">
+            <text class="item">
+            <text class="iconfont icon-buoumaotubiao15"></text>
+            <text class="count">18958</text>
+            </text>
+            <text class="item">
+            <text class="iconfont icon-pinglun1"></text>
+            <text class="count">790</text>
+            </text>
+            <button class="item btn">
+              <text class="iconfont icon-gengduo"></text>
+            </button>
+          </view>
+        </view>
+      </view>
+  </scroll-view>
+</view>

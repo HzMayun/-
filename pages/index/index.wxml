@@ -1,0 +1,65 @@
+<view>
+  <!-- banner区域 -->
+  <swiper class="content" indicator-dots indicator-color="ivory" indicator-active-color="#d43c33" autoplay>
+    <swiper-item wx:for="{{banners}}" wx:key="id" class="content-item">
+      <image src="{{item.pic}}"></image>
+    </swiper-item>
+  </swiper>
+  <!-- 导航区域 -->
+  <view class="nav">
+    <view class="nav-continer">
+      <text class="iconfont icon-meirituijian-"></text>
+      <text>每日推荐</text>
+    </view>
+    <view class="nav-continer">
+      <text class="iconfont icon-gedan1"></text>
+      <text>歌单</text>
+    </view>
+    <view class="nav-continer">
+      <text class="iconfont icon-icon-ranking"></text>
+      <text>排行榜</text>
+    </view>
+    <view class="nav-continer">
+      <text class="iconfont icon-diantai"></text>
+      <text>电台</text>
+    </view>
+    <view class="nav-continer">
+      <text class="iconfont icon-zhiboguankanliangbofangsheyingshexiangjixianxing"></text>
+      <text>直播</text>
+    </view>
+
+  </view>
+  <!-- 推荐区域 -->
+  <view class="recommendContainer">
+    <!-- 头部公共组件 -->
+    <NavHeader title="为你挑选" change="为你精心推荐" />
+    <!-- 滚动图 -->
+    <scroll-view scroll-x enable-flex class="scroll">
+      <view class="scroll-content" wx:for="{{scroll}}" wx:key="id">
+        <image src="{{item.picUrl}}"></image>
+        <view>{{item.name}}</view>
+      </view>
+
+    </scroll-view>
+  </view>
+  <!-- 排行榜 -->
+  <view class="topContainer">
+    <!-- 头部 -->
+     <NavHeader title="排行榜" change="热歌风向标" />
+    <!--song -->
+    <swiper class="top-swiper" next-margin="50rpx">
+      <swiper-item class="top-swiper-item" wx:for="{{topList}}" wx:key="index">
+        <view class=" top-all">
+          <view class="top-title">
+            <text>{{item.name}}></text>
+          </view>
+          <view class="top-content" wx:for="{{item.musicList}}" wx:key="id">
+            <image src="{{item.al.picUrl}}"></image>
+            <text style=" width: 100rpx">{{index+1}}</text>
+            <text class="top-name">{{item.al.name}}</text>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+</view>
