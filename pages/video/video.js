@@ -185,7 +185,7 @@ Page({
     //如果当前用户没有登录，展示模块对话框，让用户回到首页或者去登录
     // 这里的cookies 是哪儿来的 ？？？
 
-    let cookies = wx.getStorageInfoSync("cookies")
+    let cookies = wx.getStorageSync("cookies")
     console.log("cookies:", cookies)
     // cookies = JSON.parse(cookies)
     // console.log("cookies:", cookies)
