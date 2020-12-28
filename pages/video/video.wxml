@@ -5,34 +5,65 @@
     <input class="search" placeholder="光辉岁月" placeholder-class="placeholder"></input>
     <image class="logo" src="/static/images/favicon.ico"></image>
   </view>
-  <!-- 中间视频分组 -->
-  <scroll-view class="navScroll" enable-flex scroll-x bindtap="changeId">
-    <view class="navItem  {{currentId===item.id?'active':''}}" data-id="{{item.id}}" wx:for="{{videoList}}" wx:key="id">
-      <text data-id="{{item.id}}">{{item.name}}</text>
+  <!-- 中间视频列表名称分组 -->
+  <!-- 
+    导航条中选项动画:
+      1.使用scroll-into-view可以让某个节点跑到最前面去
+        匹配规则:scroll-into-view的值  === 标签id
+		    使用data中的scrollId,控制scroll-into-view的值的切换
+      2.通过scroll-with-animation开启过渡动画
+      3.这里前面加上了scroll，是因为scroll-into-view  （string）  
+          值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该元素
+   -->
+  <scroll-view class="navScroll" enable-flex scroll-x scroll-with-animation scroll-into-view="scroll{{scrollId}}" bindtap="changeId">
+    <view class="navItem  {{currentId===item.id?'active':''}}" data-id="{{item.id}}" id="scroll{{item.id}}" wx:for="{{navList}}" wx:key="id">
+      <text data-id="{{item.id}}" id="{{item.id}}">{{item.name}}</text>
     </view>
   </scroll-view>
   <!-- videoList区域 -->
-  <scroll-view class="videoList" scroll-y>
-      <view class="videoItem">
-        <video class="common"></video>
-        <view class="content">Wiz Khalifa《See You Again》韩国演唱会</view>
-        <view class="footer">
-          <image class="avatar" src="/static/images/logo.png"></image>
-          <text class="nickName">硅谷云音乐</text>
-          <view class="comments_praised">
-            <text class="item">
+  <!-- 
+    1）局部下拉刷新:通过scroll-view实现 
+      （scroll-view 要设置高度，不然有可能触发不了下拉刷新）
+      1、给scroll-view标签添加refresher-enabled(开启下拉动画)
+        问题:当前动画不回家了
+      2.监视用户下拉操作,当用户下拉之后,发送请求
+        ①、给scroll-view标签绑定事件:refresherrefresh
+        ②、发送请求:getVideoList
+      3.当数据回来之后,关闭下拉动画
+        通过标签属性refresher-triggered,并通过data控制,将他变为false即可
+
+    2)整个页面下拉刷新:通过页面配置开启enablePullDownRefresh:true+页面监听onPullDownRefresh
+   -->
+  <!-- 
+      上拉加载贡多数据
+    -->
+  <scroll-view class="videoList" scroll-y refresher-enabled refresher-triggered="{{triggered}}" bindrefresherrefresh="handlePullDown" bindscrolltolower="handleScrollTolower">
+    <view class="videoItem" wx:for="{{videoList}}" wx:key="vid">
+      <image class="common" id="{{item.vid}}" src="{{item.coverUrl}}" bindtap="showVideo" wx:if="{{item.vid!==videoId}}">
+      </image>
+      <video class="common" src="{{item.urlInfo.url}}" bindplay="handlePlay" id="{{item.vid}}" wx:else></video>
+      <view class="content">{{item.title}}</view>
+      <view class="footer">
+        <image class="avatar" src="{{item.coverUrl}}"></image>
+        <text class="nickName">{{item.creator.nickname}}</text>
+        <view class="comments_praised">
+          <text class="item">
             <text class="iconfont icon-buoumaotubiao15"></text>
-            <text class="count">18958</text>
-            </text>
-            <text class="item">
+          <text class="count">{{item.commentCount}}</text>
+          </text>
+          <text class="item" >
             <text class="iconfont icon-pinglun1"></text>
-            <text class="count">790</text>
-            </text>
-            <button class="item btn">
-              <text class="iconfont icon-gengduo"></text>
-            </button>
-          </view>
+          <text class="count">{{item.shareCount}}</text>
+          </text>
+          <button class="item btn" 
+          open-type="share" 
+          data-imageurl = "{{item.coverUrl}}"
+          data-title="{{item.title}}"
+          >
+            <text class="iconfont icon-gengduo"></text>
+          </button>
         </view>
       </view>
+    </view>
   </scroll-view>
 </view>
